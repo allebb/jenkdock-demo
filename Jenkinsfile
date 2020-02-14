@@ -66,7 +66,6 @@ pipeline {
 
     stage('Cleanup') {
       steps{
-        sh "docker rmi $imageRepoName:$BUILD_NUMBER"
         sh "docker rmi $imageRepoName:latest"
       }
     }
