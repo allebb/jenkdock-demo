@@ -5,7 +5,7 @@ pipeline {
       agent {
         docker {
           image 'allebb/phptestrunner-74:latest'
-          args '-v $HOME:/var/html/www'
+          args '-v $WORKSPACE:/var/html/www'
         }
 
       }
