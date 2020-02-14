@@ -57,7 +57,7 @@ pipeline {
         echo 'Deploying container to registry...'
         script {
            docker.withRegistry(registry, registryCredential) {
-             dockerImage.push($BUILD_NUMBER)
+             dockerImage.push("${env.BUILD_NUMBER}")
              dockerImage.push("latest")
            }
          }
