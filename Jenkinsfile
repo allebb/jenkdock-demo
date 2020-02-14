@@ -11,7 +11,7 @@ pipeline {
       agent any
       steps {
         echo 'Building test environment'
-        sh 'php -v'
+        sh '#php -v'
         echo 'Installing Composer'
         sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
         echo 'Installing PHPLoc...'
