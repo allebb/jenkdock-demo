@@ -1,17 +1,18 @@
 pipeline {
-  agent {
-    docker {
-      image 'allebb/phptestrunner-74:latest'
-    }
-
-  }
+  agent any
   stages {
     stage('Build') {
-      agent any
+      agent {
+        docker {
+          image 'allebb/phptestrunner-74:latest'
+          args '-v $HOME:/var/html/www'
+        }
+
+      }
       steps {
         sleep 10
         echo 'Building test environment'
-        sh '#php -v'
+        sh 'php -v'
         echo 'Installing Composer'
         sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
         echo 'Installing PHPLoc...'
@@ -27,6 +28,13 @@ pipeline {
     }
 
     stage('Test') {
+      agent {
+        docker {
+          args '-v $HOME:/var/html/www'
+          image 'allebb/phptestrunner-74:latest'
+        }
+
+      }
       steps {
         echo 'Running PHPUnit tests...'
         sh 'php /var/www/html/vendor/bin/phpunit'
@@ -38,6 +46,7 @@ pipeline {
     }
 
     stage('Deploy') {
+      agent any
       steps {
         echo 'Pipeline completed!'
       }
