@@ -10,6 +10,7 @@ pipeline {
     stage('Build') {
       agent any
       steps {
+        sleep 10
         echo 'Building test environment'
         sh '#php -v'
         echo 'Installing Composer'
