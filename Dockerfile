@@ -11,7 +11,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN cd /app && composer install --no-dev --no-progress
 
 # Set our working directory.
-WORKDIR /app
+WORKDIR /app/examples
 
 # We'll simply just output the example file as the CLI output and be done with it... it's proves it built and we packaged out files etc.
-CMD ["php", "/app/examples/test.php"]
+CMD ["php", "test.php"]
