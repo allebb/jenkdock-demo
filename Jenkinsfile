@@ -10,18 +10,17 @@ pipeline {
 
       }
       steps {
-        sleep 10
         echo 'Building test environment'
         sh 'php -v'
         echo 'Installing Composer'
-        sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer'
+        sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=$HOME --filename=composer'
         echo 'Installing PHPLoc...'
-        sh 'composer global require phploc/phploc --no-progress'
+        sh './composer global require phploc/phploc --no-progress'
         echo 'Installing PHPMD...'
-        sh 'composer global require phpmd/phpmd --no-progress'
+        sh './composer global require phpmd/phpmd --no-progress'
         echo 'Installing project composer dependencies...'
         dir(path: '/var/www/html ') {
-          sh 'composer install --no-progress'
+          sh './composer install --no-progress'
         }
 
       }
