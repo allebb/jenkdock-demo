@@ -1,12 +1,6 @@
-# Plexity
+**This repository is an unmaintained clone of [allebb/plexity](https://github.com/allebb/plexity) for demonstration purposes only, the related blog post can be [found here](#).**
 
-[![Build Status](https://travis-ci.org/allebb/plexity.svg)](https://travis-ci.org/allebb/plexity)
-[![Code Coverage](https://scrutinizer-ci.com/g/allebb/plexity/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/allebb/plexity/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/allebb/plexity/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/allebb/plexity/?branch=master)
-[![Code Climate](https://codeclimate.com/github/allebb/plexity/badges/gpa.svg)](https://codeclimate.com/github/allebb/plexity)
-[![Latest Stable Version](https://poser.pugx.org/ballen/plexity/v/stable)](https://packagist.org/packages/ballen/plexity)
-[![Latest Unstable Version](https://poser.pugx.org/ballen/plexity/v/unstable)](https://packagist.org/packages/ballen/plexity)
-[![License](https://poser.pugx.org/ballen/plexity/license)](https://packagist.org/packages/ballen/plexity)
+# Plexity
 
 Plexity (Password Complexity) is a password complexity library that enables you to set "rules" for a password (or any other kind of string) that you can then check against in your application.
 
