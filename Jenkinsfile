@@ -1,53 +1,70 @@
 pipeline {
+  environment {
+    registry = "allebb/jenkdock"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
   agent any
   stages {
-    stage('Build') {
+     stage('Clone') {
+      steps {
+        git 'https://github.com/allebb/jenkdock-demo.git'
+      }
+    }
+    stage('Test') {
       agent {
         docker {
           image 'allebb/phptestrunner-74:latest'
-          args '-v $WORKSPACE:/var/html/www'
+          args '-u root:sudo'
         }
-
       }
       steps {
         echo 'Building test environment'
         sh 'php -v'
         echo 'Installing Composer'
-        sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/var/www/html --filename=composer'
+        sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer'
         echo 'Installing PHPLoc...'
-        sh './composer global require phploc/phploc --no-progress'
+        sh 'composer global require phploc/phploc --no-progress'
         echo 'Installing PHPMD...'
-        sh './composer global require phpmd/phpmd --no-progress'
+        sh 'composer global require phpmd/phpmd --no-progress'
         echo 'Installing project composer dependencies...'
-        dir(path: '/var/www/html ') {
-          sh './composer install --no-progress'
-        }
-
-      }
-    }
-
-    stage('Test') {
-      agent {
-        docker {
-          args '-v $HOME:/var/html/www'
-          image 'allebb/phptestrunner-74:latest'
-        }
-
-      }
-      steps {
+        sh 'cd $WORKSPACE && composer install --no-progress'
         echo 'Running PHPUnit tests...'
-        sh 'php /var/www/html/vendor/bin/phpunit'
+        sh 'php $WORKSPACE/vendor/bin/phpunit --coverage-html $WORKSPACE/report/clover --coverage-clover $WORKSPACE/report/clover.xml --log-junit $WORKSPACE/report/junit.xml'
         echo 'Running PHPLoc...'
         sh 'php /root/.composer/vendor/bin/phploc lib'
         echo 'Running PHPMD...'
-        sh 'php /root/.composer/vendor/bin/phpmd lib text'
+        sh 'php /root/.composer/vendor/bin/phpmd lib text cleancode,codesize,controversial,design,naming,unusedcode --ignore-violations-on-exit'
+        sh 'chmod -R a+w $PWD && chmod -R a+w $WORKSPACE'
+        junit 'report/*.xml'
+      }
+    }
+
+    stage('Build') {
+      agent any
+      steps {
+        echo 'Building container image...'
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+
       }
     }
 
     stage('Deploy') {
-      agent any
       steps {
-        echo 'Pipeline completed!'
+        echo 'Deploying container to registry...'
+        script {
+           docker.withRegistry( '', registryCredential ) {
+             dockerImage.push()
+           }
+         }
+      }
+    }
+
+    stage('Cleanup') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
 
