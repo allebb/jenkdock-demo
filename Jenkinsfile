@@ -1,6 +1,7 @@
 pipeline {
   environment {
-    registry = "allebb/jenkdock"
+    registry = ''
+    imageRepoName = 'allebb/jenkdock'
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
@@ -45,7 +46,7 @@ pipeline {
       steps {
         echo 'Building container image...'
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage = docker.build(imageRepoName)
         }
 
       }
@@ -55,8 +56,9 @@ pipeline {
       steps {
         echo 'Deploying container to registry...'
         script {
-           docker.withRegistry( '', registryCredential ) {
-             dockerImage.push()
+           docker.withRegistry(registry, registryCredential) {
+             dockerImage.push($BUILD_NUMBER)
+             dockerImage.push("latest")
            }
          }
       }
@@ -64,7 +66,8 @@ pipeline {
 
     stage('Cleanup') {
       steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
+        sh "docker rmi $imageRepoName:$BUILD_NUMBER"
+        sh "docker rmi $imageRepoName:latest"
       }
     }
 
