@@ -13,7 +13,7 @@ pipeline {
         echo 'Building test environment'
         sh 'php -v'
         echo 'Installing Composer'
-        sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=$HOME --filename=composer'
+        sh 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/var/www/html --filename=composer'
         echo 'Installing PHPLoc...'
         sh './composer global require phploc/phploc --no-progress'
         echo 'Installing PHPMD...'
