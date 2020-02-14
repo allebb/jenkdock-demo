@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = ''
+    registry = 'https://registry.hub.docker.com'
     imageRepoName = 'allebb/jenkdock'
     registryCredential = 'dockerhub'
     dockerImage = ''
