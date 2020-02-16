@@ -1,4 +1,4 @@
-**This repository is an unmaintained clone of [allebb/plexity](https://github.com/allebb/plexity) for demonstration purposes only, the related blog post can be [found here](#).**
+**This repository is an unmaintained clone of [allebb/plexity](https://github.com/allebb/plexity) for demonstration purposes only, the related blog post can be [found here](https://blog.bobbyallen.me/2020/02/15/jenkins-pipelines-docker-build-agents-and-running-unit-tests-against-multiple-php-versions/).**
 
 # Plexity
 
